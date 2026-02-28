@@ -784,10 +784,10 @@
         shader: unshaded
   - type: ProjectileBatteryAmmoProvider
     proto: BulletDisabler
-    fireCost: 50
+    fireCost: 200
   - type: BatterySelfRecharger
     autoRecharge: true
-    autoRechargeRate: 25
+    autoRechargeRate: 75
   - type: GuideHelp
     guides:
     - Security

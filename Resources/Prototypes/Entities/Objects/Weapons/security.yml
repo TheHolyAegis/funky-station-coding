@@ -305,6 +305,7 @@
   id: FlashRecharging
   components:
     - type: AutoRecharge
+      rechargeDuration: 15
 
 # End Funky
 
