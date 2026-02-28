@@ -1003,3 +1003,23 @@
     - SoapOmega #Omega soap should be better at cleaning surgical tools but i dont know how to do that so it just gets omega soap for flavor right now
   - type: BorgModuleIcon
     icon: { sprite: Interface/Actions/actions_borg.rsi, state: adv-surgery-module }
+
+# Funky
+
+- type: entity
+  id: BorgModuleBasicSecurity
+  parent: [ BaseBorgModule, BaseProviderBorgModule ]
+  name: basic security cyborg module
+  components:
+  - type: Sprite
+    layers:
+    - state: generic
+    - state: icon-advanced-surgery
+  - type: ItemBorgModule
+    items:
+    - WeaponDisablerCyborg
+    - FlashRecharging
+    - HandcuffsLingering
+    - BookSpaceLaw
+  - type: BorgModuleIcon
+    icon: { sprite: Interface/Actions/actions_borg.rsi, state: adv-surgery-module }

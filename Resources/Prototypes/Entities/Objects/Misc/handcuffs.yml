@@ -71,6 +71,14 @@
     delay: 3
 
 - type: entity
+  parent: Handcuffs
+  id: HandcuffsLingering
+  components:
+  - type: Stack
+    lingering: true
+    count: 1
+
+- type: entity
   name: makeshift handcuffs
   description: Homemade handcuffs crafted from spare cables.
   id: Cablecuffs

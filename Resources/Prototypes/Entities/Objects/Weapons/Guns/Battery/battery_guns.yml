@@ -764,6 +764,40 @@
     tags:
       - Taser
 
+# Funky section
+
+- type: entity
+  name: disabler
+  parent: WeaponDisablerPractice
+  id: WeaponDisablerCyborg
+  description: A self-defense weapon that exhausts organic targets, slowing them to a crawl. Modified for a cyborg to use, recharging over time.
+  suffix: DO NOT MAP
+  categories: [ DoNotMap ]
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Battery/disabler.rsi
+    layers:
+      - state: base
+        map: ["enum.GunVisualLayers.Base"]
+      - state: mag-unshaded-0
+        map: ["enum.GunVisualLayers.MagUnshaded"]
+        shader: unshaded
+  - type: ProjectileBatteryAmmoProvider
+    proto: BulletDisabler
+    fireCost: 50
+  - type: BatterySelfRecharger
+    autoRecharge: true
+    autoRechargeRate: 25
+  - type: GuideHelp
+    guides:
+    - Security
+    - Antagonists
+  - type: Tag
+    tags:
+      - Taser
+
+# Funky end
+
 - type: entity
   name: disabler SMG
   parent: [ BaseWeaponBattery, BaseSecurityContraband ]

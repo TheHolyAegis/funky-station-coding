@@ -296,6 +296,18 @@
       maxCharges: 2
       charges: 2
 
+# Funky      
+
+- type: entity
+  name: flash
+  parent: Flash
+  suffix: recharging
+  id: FlashRecharging
+  components:
+    - type: AutoRecharge
+
+# End Funky
+
 - type: entity
   name: portable flasher
   parent: [BaseMachine, BaseSecurityContraband]
