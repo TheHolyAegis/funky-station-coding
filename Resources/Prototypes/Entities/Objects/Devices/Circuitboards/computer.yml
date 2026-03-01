@@ -56,7 +56,6 @@
   abstract: true
   components:
     - type: ComputerBoard
-    - type: Circuitboard
     - type: Sprite
       sprite: Objects/Misc/module.rsi
       state: cpuboard

@@ -28,7 +28,6 @@ using Robust.Client.Player;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controllers;
 using Robust.Shared.Input;
-using Robust.Shared.Localization;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
@@ -88,17 +87,7 @@ public sealed class HandsUIController : UIController, IOnStateEntered<GameplaySt
 
     private void OnAddHand(string name, HandLocation location)
     {
-        var handButton = AddHand(name, location);
-
-        // If the newly added hand has an EmptyRepresentative, show it immediately.
-        if (_playerHandsComponent != null &&
-            _player.LocalSession?.AttachedEntity is { } playerEntity &&
-            _handsSystem.TryGetHand(playerEntity, name, out var handData, _playerHandsComponent) &&
-            handData.EmptyRepresentative is { } representative)
-        {
-            handButton.SetPrototype(representative, fade: true);
-            handButton.ToolTip = handData.EmptyLabel is { } label ? Loc.GetString(label) : null;
-        }
+        AddHand(name, location);
     }
 
     private void HandPressed(GUIBoundKeyEventArgs args, SlotControl hand)
@@ -166,20 +155,9 @@ public sealed class HandsUIController : UIController, IOnStateEntered<GameplaySt
                 handButton.SetEntity(virt.BlockingEntity);
                 handButton.Blocked = true;
             }
-            else if (hand.HeldEntity != null)
-            {
-                handButton.SetEntity(hand.HeldEntity);
-                handButton.Blocked = false;
-            }
             else
             {
-                if (hand.EmptyRepresentative is { } representative)
-                {
-                    handButton.SetPrototype(representative, fade: true);
-                    handButton.ToolTip = hand.EmptyLabel is { } label ? Loc.GetString(label) : null;
-                }
-                else
-                    handButton.SetEntity(null);
+                handButton.SetEntity(hand.HeldEntity);
                 handButton.Blocked = false;
             }
         }
@@ -223,9 +201,6 @@ public sealed class HandsUIController : UIController, IOnStateEntered<GameplaySt
         if (hand == null)
             return;
 
-        // Clear any empty-slot tooltip now that the hand is holding something.
-        hand.ToolTip = null;
-
         if (_entities.TryGetComponent(entity, out VirtualItemComponent? virt))
         {
             hand.SetEntity(virt.BlockingEntity);
@@ -246,21 +221,7 @@ public sealed class HandsUIController : UIController, IOnStateEntered<GameplaySt
         if (hand == null)
             return;
 
-        // Show the empty representative if the hand has one.
-        if (_playerHandsComponent != null &&
-            _player.LocalSession?.AttachedEntity is { } playerEntity &&
-            _handsSystem.TryGetHand(playerEntity, name, out var handData, _playerHandsComponent) &&
-            handData.EmptyRepresentative is { } representative)
-        {
-            hand.SetPrototype(representative, fade: true);
-            hand.ToolTip = handData.EmptyLabel is { } label ? Loc.GetString(label) : null;
-        }
-        else
-        {
-            hand.SetEntity(null);
-            hand.ToolTip = null;
-        }
-
+        hand.SetEntity(null);
         UpdateHandStatus(hand, null);
     }
 
@@ -319,17 +280,16 @@ public sealed class HandsUIController : UIController, IOnStateEntered<GameplaySt
             _handsSystem.TryGetHand(playerEntity, handName, out var hand, _playerHandsComponent))
         {
             var foldedLocation = hand.Location.GetUILocation();
-            var emptyLabel = GetHandEmptyLabel(handName);
             if (foldedLocation == HandUILocation.Left)
             {
                 _statusHandLeft = handControl;
-                HandsGui.UpdatePanelEntityLeft(hand.HeldEntity, emptyLabel);
+                HandsGui.UpdatePanelEntityLeft(hand.HeldEntity);
             }
             else
             {
                 // Middle or right
                 _statusHandRight = handControl;
-                HandsGui.UpdatePanelEntityRight(hand.HeldEntity, emptyLabel);
+                HandsGui.UpdatePanelEntityRight(hand.HeldEntity);
             }
 
             HandsGui.SetHighlightHand(foldedLocation);
@@ -340,23 +300,6 @@ public sealed class HandsUIController : UIController, IOnStateEntered<GameplaySt
     {
         _handLookup.TryGetValue(handName, out var handControl);
         return handControl;
-    }
-
-    /// <summary>
-    /// Returns the localized EmptyLabel for a hand if it has no held entity, otherwise null.
-    /// </summary>
-    private string? GetHandEmptyLabel(string handName)
-    {
-        if (_playerHandsComponent == null ||
-            _player.LocalSession?.AttachedEntity is not { } playerEntity ||
-            !_handsSystem.TryGetHand(playerEntity, handName, out var handData, _playerHandsComponent) ||
-            handData.HeldEntity != null ||
-            handData.EmptyLabel is not { } label)
-        {
-            return null;
-        }
-
-        return Loc.GetString(label);
     }
 
     private HandButton AddHand(string handName, HandLocation location)
@@ -545,12 +488,10 @@ public sealed class HandsUIController : UIController, IOnStateEntered<GameplaySt
 
     private void UpdateHandStatus(HandButton hand, EntityUid? entity)
     {
-        var emptyLabel = entity == null ? GetHandEmptyLabel(hand.SlotName) : null;
-
         if (hand == _statusHandLeft)
-            HandsGui?.UpdatePanelEntityLeft(entity, emptyLabel);
+            HandsGui?.UpdatePanelEntityLeft(entity);
 
         if (hand == _statusHandRight)
-            HandsGui?.UpdatePanelEntityRight(entity, emptyLabel);
+            HandsGui?.UpdatePanelEntityRight(entity);
     }
 }
