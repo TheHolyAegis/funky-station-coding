@@ -13,13 +13,13 @@
     - state: service
     - state: icon-pen
   - type: ItemBorgModule
-    hands:
-    - item: Pen
-    - item: BooksBag
-    - item: HandLabeler
-    - item: RubberStampApproved
-    - item: RubberStampDenied
-    - item: RubberStampCyborg
+    items:
+    - Pen
+    - BooksBag
+    - HandLabeler
+    - RubberStampApproved
+    - RubberStampDenied
+    - RubberStampCyborg
   - type: BorgModuleIcon
     icon: { sprite: _Impstation/Interface/Actions/actions_borg.rsi, state: bureaucracy-module }
 
@@ -33,12 +33,12 @@
     - state: service
     - state: icon-beer
   - type: ItemBorgModule
-    hands:
-    - item: Lighter
-    - item: DrinkShaker
-    - item: BarSpoon
-    - item: BorgIceBucket
-    - item: Pitcher
-    - item: BorgDropper
+    items:
+    - Lighter
+    - DrinkShaker
+    - BarSpoon
+    - BorgIceBucket
+    - Pitcher
+    - BorgDropper
   - type: BorgModuleIcon
     icon: { sprite: _Impstation/Interface/Actions/actions_borg.rsi, state: bartender-module }
